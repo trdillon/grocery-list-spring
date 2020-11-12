@@ -32,7 +32,7 @@ public class GroceryService {
     }
 
     public List<Grocery> getByName(String name) {
-        return repo.findByName(name);
+        return repo.findByNameContaining(name);
     }
 
     public Grocery save(Grocery grocery) {

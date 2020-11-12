@@ -8,6 +8,6 @@ import java.util.List;
 public interface GroceryRepository extends JpaRepository<Grocery, Long> {
 
     List<Grocery> findByPurchased(boolean purchased);
-    List<Grocery> findByName(String name);
+    List<Grocery> findByNameContaining(String name);
 
 }
