@@ -24,13 +24,12 @@ public class GroceryController {
     public ResponseEntity<List<Grocery>> getGroceryList(@RequestParam(required = false) String name) {
         List<Grocery> groceries = new ArrayList<>();
 
-        // Get all groceries unless a search name was passed
         if (name == null) {
             groceries.addAll(service.getAll());
         } else {
             groceries.addAll(service.getByName(name));
         }
-        // Return the List or no content response
+
         if (groceries.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
