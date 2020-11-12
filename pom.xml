@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.itsdits</groupId>
     <artifactId>grocery-list</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <packaging>war</packaging>
     <name>grocery-list</name>
     <description>Grocery list app</description>
@@ -34,6 +34,15 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
@@ -54,7 +63,6 @@
             <artifactId>h2</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -63,5 +71,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
