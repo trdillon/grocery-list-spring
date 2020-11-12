@@ -35,8 +35,8 @@ public class GroceryService {
         return repo.findByName(name);
     }
 
-    public void save(Grocery grocery) {
-        repo.save(grocery);
+    public Grocery save(Grocery grocery) {
+        return repo.save(grocery);
     }
 
     public void delete(long id) {

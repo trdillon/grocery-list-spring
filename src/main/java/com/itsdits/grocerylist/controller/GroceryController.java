@@ -5,10 +5,7 @@ import com.itsdits.grocerylist.service.GroceryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +75,18 @@ public class GroceryController {
             } else {
                 return new ResponseEntity<>(groceries, HttpStatus.OK);
             }
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping("/grocery")
+    public ResponseEntity<Grocery> addGrocery(@RequestBody Grocery grocery) {
+        try {
+            Grocery _grocery = service.save(new Grocery(
+                            grocery.getName(), grocery.getQuantity(), grocery.getNotes(), false));
+            return new ResponseEntity<>(_grocery, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
