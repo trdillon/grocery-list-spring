@@ -1,23 +1,37 @@
 package com.itsdits.grocerylist.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "grocery")
 public class Grocery {
-    private Long id;
-    private String name;
-    private int quantity;
-    private String notes;
-    private boolean purchased;
-
-    protected Grocery() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "purchased")
+    private boolean purchased;
+
+    public Grocery() {
+    }
+
+    public Grocery(String name, int quantity, String notes, boolean purchased) {
+        this.name = name;
+        this.quantity = quantity;
+        this.notes = notes;
+        this.purchased = purchased;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,5 +70,10 @@ public class Grocery {
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
+    }
+
+    @Override
+    public String toString() {
+        return "Grocery [id=" + id + ", name=" + name + "note=" + notes + "purchased=" + purchased + "]";
     }
 }
