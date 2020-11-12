@@ -1,5 +1,6 @@
 package com.itsdits.grocerylist.controller;
 
+import com.itsdits.grocerylist.exception.ResourceNotFoundException;
 import com.itsdits.grocerylist.model.Grocery;
 import com.itsdits.grocerylist.service.GroceryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
+@RequestMapping("/api")
 public class GroceryController {
 
     @Autowired
@@ -19,26 +22,20 @@ public class GroceryController {
 
     @GetMapping("/grocery")
     public ResponseEntity<List<Grocery>> getGroceryList(@RequestParam(required = false) String name) {
-        try {
-            List<Grocery> groceries = new ArrayList<>();
+        List<Grocery> groceries = new ArrayList<>();
 
-            // Get all groceries unless a search name was passed
-            if (name == null) {
-                groceries.addAll(service.getAll());
-            } else {
-                groceries.addAll(service.getByName(name));
-            }
+        // Get all groceries unless a search name was passed
+        if (name == null) {
+            groceries.addAll(service.getAll());
+        } else {
+            groceries.addAll(service.getByName(name));
+        }
+        // Return the List or no content response
+        if (groceries.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
-            // Return the List or no content response
-            if (groceries.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(groceries, HttpStatus.OK);
-            }
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
     @GetMapping("/grocery/{id}")
@@ -46,51 +43,36 @@ public class GroceryController {
         Optional<Grocery> grocery = Optional.ofNullable(service.getById(id));
 
         return grocery.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("No grocery with the ID " + id + " was found."));
     }
 
     @GetMapping("/grocery/need")
     public ResponseEntity<List<Grocery>> getNotPurchased() {
-        try {
-            List<Grocery> groceries = service.getNotPurchased();
+        List<Grocery> groceries = service.getNotPurchased();
 
-            if (groceries.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(groceries, HttpStatus.OK);
-            }
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        if (groceries.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(groceries, HttpStatus.OK);
         }
     }
 
     @GetMapping("/grocery/purchased")
     public ResponseEntity<List<Grocery>> getPurchased() {
-        try {
-            List<Grocery> groceries = service.getPurchased();
+        List<Grocery> groceries = service.getPurchased();
 
-            if (groceries.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(groceries, HttpStatus.OK);
-            }
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        if (groceries.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(groceries, HttpStatus.OK);
         }
     }
 
     @PostMapping("/grocery")
     public ResponseEntity<Grocery> addGrocery(@RequestBody Grocery grocery) {
-        try {
-            Grocery _grocery = service.save(new Grocery(
-                            grocery.getName(), grocery.getQuantity(), grocery.getNotes(), false));
-            return new ResponseEntity<>(_grocery, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        Grocery _grocery = service.save(new Grocery(
+                grocery.getName(), grocery.getQuantity(), grocery.getNotes(), false));
+        return new ResponseEntity<>(_grocery, HttpStatus.CREATED);
     }
 
     @PutMapping("/grocery/{id}")
@@ -105,29 +87,19 @@ public class GroceryController {
             _grocery.setPurchased(grocery.isPurchased());
             return new ResponseEntity<>(service.save(_grocery), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("No grocery with the ID " + id + " was found.");
         }
     }
 
     @DeleteMapping("/grocery/{id}")
     public ResponseEntity<HttpStatus> deleteGrocery(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/grocery")
     public ResponseEntity<HttpStatus> deleteGroceryList() {
-        try {
-            service.purge();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        service.purge();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
