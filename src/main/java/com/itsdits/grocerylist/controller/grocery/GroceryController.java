@@ -1,8 +1,8 @@
-package com.itsdits.grocerylist.controller;
+package com.itsdits.grocerylist.controller.grocery;
 
 import com.itsdits.grocerylist.exception.ResourceNotFoundException;
-import com.itsdits.grocerylist.model.Grocery;
-import com.itsdits.grocerylist.service.GroceryService;
+import com.itsdits.grocerylist.model.grocery.Grocery;
+import com.itsdits.grocerylist.service.grocery.GroceryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
-package com.itsdits.grocerylist.service;
+package com.itsdits.grocerylist.service.grocery;
 
-import com.itsdits.grocerylist.model.Grocery;
-import com.itsdits.grocerylist.repository.GroceryRepository;
+import com.itsdits.grocerylist.model.grocery.Grocery;
+import com.itsdits.grocerylist.repository.grocery.GroceryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
