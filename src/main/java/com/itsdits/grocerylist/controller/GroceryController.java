@@ -43,13 +43,13 @@ public class GroceryController {
 
     @GetMapping("/grocery/{id}")
     public ResponseEntity<Grocery> getGroceryById(@PathVariable("id") long id) {
-        Optional<Grocery> grocery = Optional.ofNullable(service.get(id));
+        Optional<Grocery> grocery = Optional.ofNullable(service.getById(id));
 
         return grocery.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("grocery/need")
+    @GetMapping("/grocery/need")
     public ResponseEntity<List<Grocery>> getNotPurchased() {
         try {
             List<Grocery> groceries = service.getNotPurchased();
@@ -65,7 +65,7 @@ public class GroceryController {
         }
     }
 
-    @GetMapping("grocery/purchased")
+    @GetMapping("/grocery/purchased")
     public ResponseEntity<List<Grocery>> getPurchased() {
         try {
             List<Grocery> groceries = service.getPurchased();
@@ -87,6 +87,44 @@ public class GroceryController {
             Grocery _grocery = service.save(new Grocery(
                             grocery.getName(), grocery.getQuantity(), grocery.getNotes(), false));
             return new ResponseEntity<>(_grocery, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/grocery/{id}")
+    public ResponseEntity<Grocery> editGrocery(@PathVariable("id") long id, @RequestBody Grocery grocery) {
+        Optional<Grocery> groceryData = Optional.ofNullable(service.getById(id));
+
+        if (groceryData.isPresent()) {
+            Grocery _grocery = groceryData.get();
+            _grocery.setName(grocery.getName());
+            _grocery.setQuantity(grocery.getQuantity());
+            _grocery.setNotes(grocery.getNotes());
+            _grocery.setPurchased(grocery.isPurchased());
+            return new ResponseEntity<>(service.save(_grocery), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/grocery/{id}")
+    public ResponseEntity<HttpStatus> deleteGrocery(@PathVariable("id") long id) {
+        try {
+            service.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @DeleteMapping("/grocery")
+    public ResponseEntity<HttpStatus> deleteGroceryList() {
+        try {
+            service.purge();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

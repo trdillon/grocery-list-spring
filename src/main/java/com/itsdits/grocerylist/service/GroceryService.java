@@ -19,7 +19,7 @@ public class GroceryService {
         return repo.findAll();
     }
 
-    public Grocery get(long id) {
+    public Grocery getById(long id) {
         return repo.findById(id).orElse(null);
     }
 
