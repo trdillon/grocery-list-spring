@@ -8,9 +8,24 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
+/**
+ * ControllerExceptionHandler.java - This class uses the {@code @ControllerAdvice} annotation to provide
+ * global exception handling for this app. Utilizes {@link ErrorMessage} for ErrorMessage objects.
+ *
+ * @author Tim Dillon
+ * @version 1.0
+ */
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    /**
+     * This handles the ResourceNotFoundException that is thrown when a method cannot find a resource such as
+     * an object having {@code id = 3}.
+     *
+     * @param exception ResourceNotFoundException that holds the error message
+     * @param request WebRequest that holds the description of the request
+     * @return Error message and HttpStatus.NOT_FOUND
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException exception, WebRequest request) {
         ErrorMessage message = new ErrorMessage(
@@ -22,6 +37,13 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This handles various exceptions not caught by other handlers. Generic global handler implementation.
+     *
+     * @param exception Exception that holds the error message
+     * @param request WebRequest that holds the description of the request
+     * @return Error message and HttpStatus.INTERNAL_SERVER_ERROR
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception exception, WebRequest request) {
         ErrorMessage message = new ErrorMessage(

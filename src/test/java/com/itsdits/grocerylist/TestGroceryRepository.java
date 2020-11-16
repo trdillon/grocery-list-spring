@@ -9,6 +9,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * TestGroceryRepository.java - This class provides test methods for {@link GroceryRepository} to ensure
+ * the CRUD operations perform successfully. It implements {@link TestEntityManager} for data persistence.
+ * This class uses {@link DataJpaTest} to disable full auto-configuration and make the tests transactional.
+ *
+ * @author Tim Dillon
+ * @version 1.0
+ */
 @DataJpaTest
 public class TestGroceryRepository {
 

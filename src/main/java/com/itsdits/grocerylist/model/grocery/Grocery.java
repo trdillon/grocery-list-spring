@@ -2,6 +2,12 @@ package com.itsdits.grocerylist.model.grocery;
 
 import javax.persistence.*;
 
+/**
+ * Grocery.java - This class creates an Entity model for the Grocery objects used in this app.
+ *
+ * @author Tim Dillon
+ * @version 1.0
+ */
 @Entity
 @Table(name = "grocery")
 public class Grocery {
@@ -24,6 +30,8 @@ public class Grocery {
 
     public Grocery() {
     }
+
+    //TODO - constructors for different param sets
 
     public Grocery(String name, int quantity, String notes, boolean purchased) {
         this.name = name;
