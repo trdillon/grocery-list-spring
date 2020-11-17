@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         final CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(ImmutableList.of("https://www.yourdomain.com")); // Production domain
-        // configuration.setAllowedOrigins(ImmutableList.of("http://localhost:3000") // React dev env
+        // configuration.setAllowedOrigins(ImmutableList.of("http://localhost:3000")); // Dev env
         // configuration.setAllowedOrigins(ImmutableList.of("*"));  // All domains
         configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
