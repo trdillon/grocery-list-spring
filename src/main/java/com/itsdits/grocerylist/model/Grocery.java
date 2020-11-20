@@ -1,4 +1,4 @@
-package com.itsdits.grocerylist.model.grocery;
+package com.itsdits.grocerylist.model;
 
 import javax.persistence.*;
 

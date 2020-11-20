@@ -1,13 +1,14 @@
-package com.itsdits.grocerylist.repository.grocery;
+package com.itsdits.grocerylist.repository;
 
-import com.itsdits.grocerylist.model.grocery.Grocery;
+import com.itsdits.grocerylist.model.Grocery;
+import com.itsdits.grocerylist.service.GroceryService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
  * GroceryRepository.java - This class extends {@link JpaRepository} to provide CRUD operation methods
- * for {@link com.itsdits.grocerylist.service.grocery.GroceryService GroceryService}.
+ * for {@link GroceryService GroceryService}.
  *
  * @author Tim Dillon
  * @version 1.0

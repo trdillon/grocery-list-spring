@@ -1,7 +1,7 @@
 package com.itsdits.grocerylist;
 
-import com.itsdits.grocerylist.model.grocery.Grocery;
-import com.itsdits.grocerylist.repository.grocery.GroceryRepository;
+import com.itsdits.grocerylist.model.Grocery;
+import com.itsdits.grocerylist.repository.GroceryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

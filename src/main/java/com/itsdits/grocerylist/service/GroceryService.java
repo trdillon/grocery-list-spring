@@ -1,7 +1,8 @@
-package com.itsdits.grocerylist.service.grocery;
+package com.itsdits.grocerylist.service;
 
-import com.itsdits.grocerylist.model.grocery.Grocery;
-import com.itsdits.grocerylist.repository.grocery.GroceryRepository;
+import com.itsdits.grocerylist.controller.GroceryController;
+import com.itsdits.grocerylist.model.Grocery;
+import com.itsdits.grocerylist.repository.GroceryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import java.util.List;
 
 /**
  * GroceryService.java - This class provides a data service for the API calls from
- * {@link com.itsdits.grocerylist.controller.grocery.GroceryController GroceryController}.
+ * {@link GroceryController GroceryController}.
  * Utilizes an instance of {@link GroceryRepository} as an interface for JpaRepository CRUD methods.
  *
  * @author Tim Dillon
