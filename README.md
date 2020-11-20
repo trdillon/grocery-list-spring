@@ -2,6 +2,8 @@
 
 ### <a href="http://grocery.itsdits.com/">Live Demo</a> 
 
+### The frontend for this project can be found <a href="http://github.com/trdillon/grocery-list-react">here.</a>
+
 ## Description
 This is a simple grocery list app to keep track of what groceries you need to purchase.
 The back end is made with Java and Spring Boot.
