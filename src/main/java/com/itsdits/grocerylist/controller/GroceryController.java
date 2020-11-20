@@ -19,7 +19,6 @@ import java.util.Optional;
  * @author Tim Dillon
  * @version 1.0
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class GroceryController {
