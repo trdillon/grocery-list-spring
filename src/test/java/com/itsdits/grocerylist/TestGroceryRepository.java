@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * This class uses {@link DataJpaTest} to disable full auto-configuration and make the tests transactional.
  *
  * @author Tim Dillon
- * @version 1.0
+ * @version 1.1
  */
 @DataJpaTest
 public class TestGroceryRepository {
@@ -35,21 +35,22 @@ public class TestGroceryRepository {
 
     @Test
     void should_add_a_grocery() {
-        Grocery grocery = repository.save(new Grocery("test", 1, "testing", false));
+        Grocery grocery = repository.save(new Grocery("test", 1, 100, "testing", false));
 
         assertThat(grocery).hasFieldOrPropertyWithValue("name", "test");
         assertThat(grocery).hasFieldOrPropertyWithValue("quantity", 1);
+        assertThat(grocery).hasFieldOrPropertyWithValue("price", 100);
         assertThat(grocery).hasFieldOrPropertyWithValue("notes", "testing");
         assertThat(grocery).hasFieldOrPropertyWithValue("purchased", false);
     }
 
     @Test
     void should_find_all_groceries() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", false);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", false);
         entityManager.persist(data1);
-        Grocery data2 = new Grocery("test2", 2, "testing2", false);
+        Grocery data2 = new Grocery("test2", 2, 100, "testing2", false);
         entityManager.persist(data2);
-        Grocery data3 = new Grocery("test3", 3, "testing3", false);
+        Grocery data3 = new Grocery("test3", 3, 100, "testing3", false);
         entityManager.persist(data3);
 
         Iterable<Grocery> groceries = repository.findAll();
@@ -59,9 +60,9 @@ public class TestGroceryRepository {
 
     @Test
     void should_find_grocery_by_id() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", false);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", false);
         entityManager.persist(data1);
-        Grocery data2 = new Grocery("test2", 2, "testing2", false);
+        Grocery data2 = new Grocery("test2", 2, 100, "testing2", false);
         entityManager.persist(data2);
 
         Grocery grocery = repository.findById(data2.getId()).get();
@@ -71,11 +72,11 @@ public class TestGroceryRepository {
 
     @Test
     void should_find_purchased_groceries() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", true);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", true);
         entityManager.persist(data1);
-        Grocery data2 = new Grocery("test2", 2, "testing2", false);
+        Grocery data2 = new Grocery("test2", 2, 100, "testing2", false);
         entityManager.persist(data2);
-        Grocery data3 = new Grocery("test3", 3, "testing3", true);
+        Grocery data3 = new Grocery("test3", 3, 100, "testing3", true);
         entityManager.persist(data3);
 
         Iterable<Grocery> groceries = repository.findByPurchased(true);
@@ -85,11 +86,11 @@ public class TestGroceryRepository {
 
     @Test
     void should_find_grocery_by_name() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", false);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", false);
         entityManager.persist(data1);
-        Grocery data2 = new Grocery("test2", 2, "testing2", false);
+        Grocery data2 = new Grocery("test2", 2, 100, "testing2", false);
         entityManager.persist(data2);
-        Grocery data3 = new Grocery("failmeplz", 3, "testing3", false);
+        Grocery data3 = new Grocery("failmeplz", 3, 100, "testing3", false);
         entityManager.persist(data3);
 
         Iterable<Grocery> groceries = repository.findByNameContaining("est");
@@ -99,13 +100,14 @@ public class TestGroceryRepository {
 
     @Test
     void should_update_grocery_by_id() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", false);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", false);
         entityManager.persist(data1);
-        Grocery dataToCheck = new Grocery("this data", 2, "will be checked", true);
+        Grocery dataToCheck = new Grocery("this data", 2, 200, "will be checked", true);
 
         Grocery tempData = repository.findById(data1.getId()).get();
         tempData.setName(dataToCheck.getName());
         tempData.setQuantity(dataToCheck.getQuantity());
+        tempData.setPrice(dataToCheck.getPrice());
         tempData.setNotes(dataToCheck.getNotes());
         tempData.setPurchased(dataToCheck.isPurchased());
         repository.save(tempData);
@@ -115,17 +117,18 @@ public class TestGroceryRepository {
         assertThat(testData.getId()).isEqualTo(data1.getId());
         assertThat(testData.getName()).isEqualTo(dataToCheck.getName());
         assertThat(testData.getQuantity()).isEqualTo(dataToCheck.getQuantity());
+        assertThat(testData.getPrice()).isEqualTo(dataToCheck.getPrice());
         assertThat(testData.getNotes()).isEqualTo(dataToCheck.getNotes());
         assertThat(testData.isPurchased()).isEqualTo(dataToCheck.isPurchased());
     }
 
     @Test
     void should_delete_grocery_by_id() {
-        Grocery data1 = new Grocery("test1", 1, "testing1", false);
+        Grocery data1 = new Grocery("test1", 1, 100, "testing1", false);
         entityManager.persist(data1);
-        Grocery data2 = new Grocery("test2", 2, "testing2", false);
+        Grocery data2 = new Grocery("test2", 2, 100, "testing2", false);
         entityManager.persist(data2);
-        Grocery data3 = new Grocery("test3", 3, "testing3", false);
+        Grocery data3 = new Grocery("test3", 3, 100, "testing3", false);
         entityManager.persist(data3);
 
         repository.deleteById(data2.getId());
@@ -136,8 +139,8 @@ public class TestGroceryRepository {
 
     @Test
     void should_delete_all_groceries() {
-        entityManager.persist(new Grocery("test1", 1, "testing1", false));
-        entityManager.persist(new Grocery("test2", 2, "testing2", false));
+        entityManager.persist(new Grocery("test1", 1, 100, "testing1", false));
+        entityManager.persist(new Grocery("test2", 2, 100, "testing2", false));
 
         repository.deleteAll();
 

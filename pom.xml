@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.itsdits</groupId>
     <artifactId>grocery-list</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>war</packaging>
     <name>grocery-list</name>
     <description>Grocery list app</description>
@@ -47,11 +47,12 @@
         <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <scope>runtime</scope>
+        <scope>provided</scope>
     </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>

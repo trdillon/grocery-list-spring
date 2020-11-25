@@ -17,7 +17,7 @@ import java.util.Optional;
  * Utilizes an instance of {@link GroceryService} to handle the logic of the API calls.
  *
  * @author Tim Dillon
- * @version 1.0
+ * @version 1.1
  */
 @RestController
 @RequestMapping("/api")
@@ -108,7 +108,7 @@ public class GroceryController {
     @PostMapping("/grocery")
     public ResponseEntity<Grocery> addGrocery(@RequestBody Grocery grocery) {
         Grocery _grocery = service.save(new Grocery(
-                grocery.getName(), grocery.getQuantity(), grocery.getNotes(), false));
+                grocery.getName(), grocery.getQuantity(), grocery.getPrice(), grocery.getNotes(), false));
         return new ResponseEntity<>(_grocery, HttpStatus.CREATED);
     }
 
@@ -128,6 +128,7 @@ public class GroceryController {
             Grocery _grocery = groceryData.get();
             _grocery.setName(grocery.getName());
             _grocery.setQuantity(grocery.getQuantity());
+            _grocery.setPrice(grocery.getPrice());
             _grocery.setNotes(grocery.getNotes());
             _grocery.setPurchased(grocery.isPurchased());
             return new ResponseEntity<>(service.save(_grocery), HttpStatus.OK);

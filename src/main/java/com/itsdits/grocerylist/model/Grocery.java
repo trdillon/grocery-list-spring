@@ -4,9 +4,14 @@ import javax.persistence.*;
 
 /**
  * Grocery.java - This class creates an Entity model for the Grocery objects used in this app.
+ * The price field uses the int datatype for storing values as we are recording prices in Japanese yen.
+ * Yen is represented by whole numbers only, so for this application it will work. If the currency to be
+ * represented by price is changed to US dollars or Euros, for example, the datatype will need to be changed
+ * to handle the decimal point and remainders such as cents. Using type double in the app and type decimal in the DB
+ * can cause rounding issues when doing floating point math, so caution should be taken when changing datatype.
  *
  * @author Tim Dillon
- * @version 1.0
+ * @version 1.1
  */
 @Entity
 @Table(name = "grocery")
@@ -22,6 +27,9 @@ public class Grocery {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "price")
+    private int price;
+
     @Column(name = "notes")
     private String notes;
 
@@ -33,9 +41,10 @@ public class Grocery {
 
     //TODO - constructors for different param sets
 
-    public Grocery(String name, int quantity, String notes, boolean purchased) {
+    public Grocery(String name, int quantity, int price, String notes, boolean purchased) {
         this.name = name;
         this.quantity = quantity;
+        this.price = price;
         this.notes = notes;
         this.purchased = purchased;
     }
@@ -62,6 +71,14 @@ public class Grocery {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getNotes() {
