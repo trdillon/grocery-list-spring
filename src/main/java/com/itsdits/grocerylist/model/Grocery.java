@@ -36,17 +36,22 @@ public class Grocery {
     @Column(name = "purchased")
     private boolean purchased;
 
+    @Column(name = "favorite")
+    private boolean favorite;
+
     public Grocery() {
     }
 
     //TODO - constructors for different param sets
 
-    public Grocery(String name, int quantity, int price, String notes, boolean purchased) {
+    public Grocery(String name, int quantity, int price, String notes,
+                   boolean purchased, boolean favorite) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.notes = notes;
         this.purchased = purchased;
+        this.favorite = favorite;
     }
 
     public Long getId() {
@@ -95,6 +100,14 @@ public class Grocery {
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     @Override

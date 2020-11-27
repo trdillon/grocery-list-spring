@@ -62,6 +62,15 @@ public class GroceryService {
     }
 
     /**
+     * This gets a List of Grocery items that the user has marked as favorites.
+     *
+     * @return List of Grocery objects where {@code favorite = true}
+     */
+    public List<Grocery> getFavorites() {
+        return repo.findByFavorite(true);
+    }
+
+    /**
      * This gets a List of Grocery items whose name contains a match to the search criteria.
      *
      * @param name String param representing the search criteria

@@ -100,6 +100,23 @@ public class GroceryController {
     }
 
     /**
+     * GET call gets a List of Grocery items the user marked as favorites.
+     *
+     * @return List of Grocery objects where {@code favorite = true} or
+     *         HttpStatus.NO_CONTENT if no items match criteria
+     */
+    @GetMapping("/grocery/favs")
+    public ResponseEntity<List<Grocery>> getFavs() {
+        List<Grocery> groceries = service.getFavorites();
+
+        if (groceries.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(groceries, HttpStatus.OK);
+        }
+    }
+
+    /**
      * POST call creates a new Grocery item.
      *
      * @param grocery Grocery object
@@ -108,7 +125,8 @@ public class GroceryController {
     @PostMapping("/grocery")
     public ResponseEntity<Grocery> addGrocery(@RequestBody Grocery grocery) {
         Grocery _grocery = service.save(new Grocery(
-                grocery.getName(), grocery.getQuantity(), grocery.getPrice(), grocery.getNotes(), false));
+                grocery.getName(), grocery.getQuantity(), grocery.getPrice(),
+                grocery.getNotes(), false, false));
         return new ResponseEntity<>(_grocery, HttpStatus.CREATED);
     }
 
@@ -131,6 +149,7 @@ public class GroceryController {
             _grocery.setPrice(grocery.getPrice());
             _grocery.setNotes(grocery.getNotes());
             _grocery.setPurchased(grocery.isPurchased());
+            _grocery.setFavorite(grocery.isFavorite());
             return new ResponseEntity<>(service.save(_grocery), HttpStatus.OK);
         } else {
             throw new ResourceNotFoundException("No grocery with the ID " + id + " was found.");

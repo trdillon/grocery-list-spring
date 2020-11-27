@@ -24,11 +24,18 @@ public interface GroceryRepository extends JpaRepository<Grocery, Long> {
     List<Grocery> findByPurchased(boolean purchased);
 
     /**
+     * This gets a List of Grocery items based on the {@code favorite} value.
+     *
+     * @param favorite Boolean param marking favorite items
+     * @return List of Grocery objects that match {@code favorite = 1}
+     */
+    List<Grocery> findByFavorite(boolean favorite);
+
+    /**
      * This gets a List of Grocery items whose name contains a match to the search criteria.
      *
      * @param name String param representing the search criteria
      * @return List of Grocery objects that match the search criteria
      */
     List<Grocery> findByNameContaining(String name);
-
 }
