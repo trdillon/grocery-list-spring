@@ -72,14 +72,20 @@ public class GroceryController {
      *         HttpStatus.NO_CONTENT if no items match criteria
      */
     @GetMapping("/grocery/need")
-    public ResponseEntity<List<Grocery>> getNotPurchased() {
-        List<Grocery> groceries = service.getNotPurchased();
+    public ResponseEntity<List<Grocery>> getNotPurchased(@RequestParam(required = false) String name) {
+        List<Grocery> groceries = new ArrayList<>();
+
+        if (name == null) {
+            groceries.addAll(service.getNotPurchased());
+        } else {
+            groceries.addAll(service.getByName(name));
+        }
 
         if (groceries.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(groceries, HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
     /**
@@ -89,14 +95,20 @@ public class GroceryController {
      *         HttpStatus.NO_CONTENT if no items match criteria
      */
     @GetMapping("/grocery/purchased")
-    public ResponseEntity<List<Grocery>> getPurchased() {
-        List<Grocery> groceries = service.getPurchased();
+    public ResponseEntity<List<Grocery>> getPurchased(@RequestParam(required = false) String name) {
+        List<Grocery> groceries = new ArrayList<>();
+
+        if (name == null) {
+            groceries.addAll(service.getPurchased());
+        } else {
+            groceries.addAll(service.getByName(name));
+        }
 
         if (groceries.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(groceries, HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
     /**
@@ -106,14 +118,20 @@ public class GroceryController {
      *         HttpStatus.NO_CONTENT if no items match criteria
      */
     @GetMapping("/grocery/favs")
-    public ResponseEntity<List<Grocery>> getFavs() {
-        List<Grocery> groceries = service.getFavorites();
+    public ResponseEntity<List<Grocery>> getFavs(@RequestParam(required = false) String name) {
+        List<Grocery> groceries = new ArrayList<>();
+
+        if (name == null) {
+            groceries.addAll(service.getFavorites());
+        } else {
+            groceries.addAll(service.getByName(name));
+        }
 
         if (groceries.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(groceries, HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
     /**
