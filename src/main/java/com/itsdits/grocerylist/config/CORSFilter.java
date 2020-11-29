@@ -29,7 +29,7 @@ public class CORSFilter extends OncePerRequestFilter {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
                 "Access-Control-Allow-Origin, Access-Control-Allow-Credentials");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://yourdomain.com/");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "https://grocery.itsdits.com");
         filterChain.doFilter(request, response);
     }
 }
