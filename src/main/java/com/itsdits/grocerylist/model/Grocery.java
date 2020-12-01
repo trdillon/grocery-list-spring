@@ -42,8 +42,6 @@ public class Grocery {
     public Grocery() {
     }
 
-    //TODO - constructors for different param sets
-
     public Grocery(String name, int quantity, int price, String notes,
                    boolean purchased, boolean favorite) {
         this.name = name;
@@ -56,10 +54,6 @@ public class Grocery {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -112,6 +106,6 @@ public class Grocery {
 
     @Override
     public String toString() {
-        return "Grocery [id=" + id + ", name=" + name + "note=" + notes + "purchased=" + purchased + "]";
+        return "Grocery [id=" + id + ", name=" + name + "quantity=" + quantity + "notes=" + notes + "]";
     }
 }
