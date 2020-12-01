@@ -38,4 +38,12 @@ public interface GroceryRepository extends JpaRepository<Grocery, Long> {
      * @return List of Grocery objects that match the search criteria
      */
     List<Grocery> findByNameContaining(String name);
+
+    /**
+     * This gets a List of Grocery items based on the user id.
+     *
+     * @param id String param of the user id
+     * @return List of Grocery objects that match the search criteria
+     */
+    List<Grocery> findAllByUserId(String id);
 }
