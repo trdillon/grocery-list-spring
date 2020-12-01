@@ -3,7 +3,8 @@ package com.itsdits.grocerylist.controller;
 import com.itsdits.grocerylist.exception.ResourceNotFoundException;
 import com.itsdits.grocerylist.model.Grocery;
 import com.itsdits.grocerylist.service.GroceryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,12 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class GroceryController {
 
-    @Autowired
-    private GroceryService service;
+    private final Logger log = LoggerFactory.getLogger(GroceryController.class);
+    private final GroceryService service;
+
+    public GroceryController(GroceryService service) {
+        this.service = service;
+    }
 
     /**
      * GET call gets a list of all Grocery items, or any matching the search criteria if provided.
