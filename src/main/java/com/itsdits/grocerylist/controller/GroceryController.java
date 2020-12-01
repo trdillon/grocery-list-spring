@@ -9,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,31 +28,40 @@ public class GroceryController {
         this.service = service;
     }
 
-    @GetMapping("/grocery")
-    public ResponseEntity<List<Grocery>> getGroceryList(@RequestParam(required = false) String name) {
-        List<Grocery> groceries = new ArrayList<>();
-
-        if (name == null) {
-            groceries.addAll(service.getAll());
-        } else {
-            groceries.addAll(service.getByName(name));
-        }
-
-        if (groceries.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(groceries, HttpStatus.OK);
+    @GetMapping("/groceries")
+    Collection<Grocery> groceries() {
+        return service.getAll();
     }
 
     @GetMapping("/grocery/{id}")
-    public ResponseEntity<Grocery> getGroceryById(@PathVariable("id") long id) {
+    ResponseEntity<?> getGrocery(@PathVariable Long id) {
         Optional<Grocery> grocery = Optional.ofNullable(service.getById(id));
-
-        return grocery.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+        return grocery.map(response -> ResponseEntity.ok().body(response))
                 .orElseThrow(() -> new ResourceNotFoundException("No grocery with the ID " + id + " was found."));
     }
 
+    @PostMapping("/grocery")
+    ResponseEntity<Grocery> createGrocery(@Valid @RequestBody Grocery grocery) throws URISyntaxException {
+        log.info("Request to create grocery: {}", grocery);
+        Grocery result = service.save(grocery);
+        return ResponseEntity.created(new URI("/api/grocery/" + result.getId())).body(result);
+    }
+
+    @PutMapping("/grocery/{id}")
+    ResponseEntity<Grocery> updateGrocery(@Valid @RequestBody Grocery grocery) {
+        log.info("Request to update grocery: {}", grocery);
+        Grocery result = service.save(grocery);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/grocery/{id}")
+    public ResponseEntity<?> deleteGrocery(@PathVariable Long id) {
+        log.info("Request to delete grocery: {}", id);
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+/*
     @GetMapping("/grocery/need")
     public ResponseEntity<List<Grocery>> getNotPurchased(@RequestParam(required = false) String name) {
         List<Grocery> groceries = new ArrayList<>();
@@ -99,42 +112,5 @@ public class GroceryController {
 
         return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
-
-    @PostMapping("/grocery")
-    public ResponseEntity<Grocery> addGrocery(@RequestBody Grocery grocery) {
-        Grocery _grocery = service.save(new Grocery(
-                grocery.getName(), grocery.getQuantity(), grocery.getPrice(),
-                grocery.getNotes(), false, false));
-        return new ResponseEntity<>(_grocery, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/grocery/{id}")
-    public ResponseEntity<Grocery> editGrocery(@PathVariable("id") long id, @RequestBody Grocery grocery) {
-        Optional<Grocery> groceryData = Optional.ofNullable(service.getById(id));
-
-        if (groceryData.isPresent()) {
-            Grocery _grocery = groceryData.get();
-            _grocery.setName(grocery.getName());
-            _grocery.setQuantity(grocery.getQuantity());
-            _grocery.setPrice(grocery.getPrice());
-            _grocery.setNotes(grocery.getNotes());
-            _grocery.setPurchased(grocery.isPurchased());
-            _grocery.setFavorite(grocery.isFavorite());
-            return new ResponseEntity<>(service.save(_grocery), HttpStatus.OK);
-        } else {
-            throw new ResourceNotFoundException("No grocery with the ID " + id + " was found.");
-        }
-    }
-
-    @DeleteMapping("/grocery/{id}")
-    public ResponseEntity<HttpStatus> deleteGrocery(@PathVariable("id") long id) {
-        service.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/grocery")
-    public ResponseEntity<HttpStatus> deleteGroceryList() {
-        service.purge();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+ */
 }
