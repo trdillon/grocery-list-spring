@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,12 +18,13 @@ public class Grocery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int quantity;
-    private int price;
-    private String notes;
-    private boolean purchased;
-    private boolean favorite;
+    private String group;
+    @Column(name = "sub_group")
+    private String subGroup;
 
     @ManyToOne(cascade=CascadeType.PERSIST)
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<Item> events;
 }
