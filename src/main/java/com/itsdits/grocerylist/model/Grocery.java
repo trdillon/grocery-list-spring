@@ -26,5 +26,5 @@ public class Grocery {
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private Set<Item> events;
+    private Set<Item> items;
 }
