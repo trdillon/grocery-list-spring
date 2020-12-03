@@ -2,19 +2,18 @@ package com.itsdits.grocerylist.controller;
 
 import com.itsdits.grocerylist.exception.ResourceNotFoundException;
 import com.itsdits.grocerylist.model.Grocery;
+import com.itsdits.grocerylist.repository.UserRepository;
 import com.itsdits.grocerylist.service.GroceryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,20 +21,27 @@ import java.util.Optional;
 public class GroceryController {
 
     private final Logger log = LoggerFactory.getLogger(GroceryController.class);
-    private final GroceryService service;
+    private final GroceryService groceryService;
+    private UserRepository userRepository;
 
-    public GroceryController(GroceryService service) {
-        this.service = service;
+    public GroceryController(GroceryService groceryService, UserRepository userRepository) {
+        this.groceryService = groceryService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/groceries")
     Collection<Grocery> groceries() {
-        return service.getAll();
+        return groceryService.getAll();
+    }
+
+    @GetMapping("/grocery")
+    Collection<Grocery> groceryList(Principal principal) {
+        return groceryService.getByUserId(principal.getName());
     }
 
     @GetMapping("/grocery/{id}")
     ResponseEntity<?> getGrocery(@PathVariable Long id) {
-        Optional<Grocery> grocery = Optional.ofNullable(service.getById(id));
+        Optional<Grocery> grocery = Optional.ofNullable(groceryService.getById(id));
         return grocery.map(response -> ResponseEntity.ok().body(response))
                 .orElseThrow(() -> new ResourceNotFoundException("No grocery with the ID " + id + " was found."));
     }
@@ -43,21 +49,21 @@ public class GroceryController {
     @PostMapping("/grocery")
     ResponseEntity<Grocery> createGrocery(@Valid @RequestBody Grocery grocery) throws URISyntaxException {
         log.info("Request to create grocery: {}", grocery);
-        Grocery result = service.save(grocery);
+        Grocery result = groceryService.save(grocery);
         return ResponseEntity.created(new URI("/api/grocery/" + result.getId())).body(result);
     }
 
     @PutMapping("/grocery/{id}")
     ResponseEntity<Grocery> updateGrocery(@Valid @RequestBody Grocery grocery) {
         log.info("Request to update grocery: {}", grocery);
-        Grocery result = service.save(grocery);
+        Grocery result = groceryService.save(grocery);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/grocery/{id}")
     public ResponseEntity<?> deleteGrocery(@PathVariable Long id) {
         log.info("Request to delete grocery: {}", id);
-        service.delete(id);
+        groceryService.delete(id);
         return ResponseEntity.ok().build();
     }
 

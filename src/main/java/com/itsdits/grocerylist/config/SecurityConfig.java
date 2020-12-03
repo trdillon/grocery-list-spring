@@ -20,12 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .oauth2Login().and()
                 .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/api/user").permitAll()
-                .antMatchers("/api/grocery").hasAuthority("User")
-                .anyRequest().authenticated();
+                    .antMatchers("/api/user").permitAll()
+                    .antMatchers("/api/grocery").hasAuthority("User")
+                    .anyRequest().authenticated();
     }
 
     @Bean

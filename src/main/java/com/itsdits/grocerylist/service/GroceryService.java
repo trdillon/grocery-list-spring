@@ -21,6 +21,10 @@ public class GroceryService {
         return repo.findAll();
     }
 
+    public List<Grocery> getByUserId(String user) {
+        return repo.findAllByUserId(user);
+    }
+
     public Grocery getById(long id) {
         return repo.findById(id).orElse(null);
     }
