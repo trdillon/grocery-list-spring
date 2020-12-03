@@ -1,7 +1,6 @@
 package com.itsdits.grocerylist.repository;
 
 import com.itsdits.grocerylist.model.Grocery;
-import com.itsdits.grocerylist.service.GroceryService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
