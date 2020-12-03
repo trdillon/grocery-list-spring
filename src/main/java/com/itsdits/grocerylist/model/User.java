@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -19,4 +21,7 @@ public class User {
     private String id;
     private String name;
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Item> items;
 }
