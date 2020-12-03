@@ -24,9 +24,6 @@ public class Grocery {
     @Column(name = "sub_group")
     private String subGroup;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    private User user;
-
     @OneToMany(mappedBy = "grocery")
     private Set<Item> items;
 }
