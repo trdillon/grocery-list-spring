@@ -26,7 +26,7 @@ public class GroceryController {
 
     private final Logger log = LoggerFactory.getLogger(GroceryController.class);
     private final GroceryService groceryService;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public GroceryController(GroceryService groceryService, UserRepository userRepository) {
         this.groceryService = groceryService;
@@ -79,57 +79,4 @@ public class GroceryController {
         groceryService.delete(id);
         return ResponseEntity.ok().build();
     }
-
-/*
-    @GetMapping("/grocery/need")
-    public ResponseEntity<List<Grocery>> getNotPurchased(@RequestParam(required = false) String name) {
-        List<Grocery> groceries = new ArrayList<>();
-
-        if (name == null) {
-            groceries.addAll(service.getNotPurchased());
-        } else {
-            groceries.addAll(service.getByName(name));
-        }
-
-        if (groceries.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(groceries, HttpStatus.OK);
-    }
-
-    @GetMapping("/grocery/purchased")
-    public ResponseEntity<List<Grocery>> getPurchased(@RequestParam(required = false) String name) {
-        List<Grocery> groceries = new ArrayList<>();
-
-        if (name == null) {
-            groceries.addAll(service.getPurchased());
-        } else {
-            groceries.addAll(service.getByName(name));
-        }
-
-        if (groceries.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(groceries, HttpStatus.OK);
-    }
-
-    @GetMapping("/grocery/favs")
-    public ResponseEntity<List<Grocery>> getFavs(@RequestParam(required = false) String name) {
-        List<Grocery> groceries = new ArrayList<>();
-
-        if (name == null) {
-            groceries.addAll(service.getFavorites());
-        } else {
-            groceries.addAll(service.getByName(name));
-        }
-
-        if (groceries.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(groceries, HttpStatus.OK);
-    }
- */
 }
