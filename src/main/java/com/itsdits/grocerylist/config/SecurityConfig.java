@@ -1,43 +1,28 @@
 package com.itsdits.grocerylist.config;
 
-import org.springframework.context.annotation.Bean;
+import com.okta.spring.boot.oauth.Okta;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .oauth2Login().and()
-                .csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .and()
-                .authorizeRequests()
-                    .antMatchers("/api/user").permitAll()
-                    .antMatchers("/api/grocery").hasAuthority("User")
-                    .anyRequest().authenticated();
-    }
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2ResourceServer().jwt();
 
-    @Bean
-    public RequestCache refererRequestCache() {
-        return new HttpSessionRequestCache() {
-            @Override
-            public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
-                String referrer = request.getHeader("referer");
-                if (referrer != null) {
-                    request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST", new SimpleSavedRequest(referrer));
-                }
-            }
-        };
+        // process CORS annotations
+        http.cors();
+
+        // force a non-empty response body for 401's to make the response more browser friendly
+        Okta.configureResourceServer401ResponseBody(http);
     }
 }
