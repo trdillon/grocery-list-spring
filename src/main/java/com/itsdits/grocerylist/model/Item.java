@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -19,13 +18,19 @@ public class Item {
     @Id
     @GeneratedValue
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "grocery_id")
+    Grocery grocery;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
     private String product;
     private int quantity;
     private int price;
     private String notes;
     private boolean purchased;
     private boolean favorite;
-
-    @ManyToMany
-    private Set<User> buyers;
 }
