@@ -10,13 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * CORSFilter.java - This class implements {@link OncePerRequestFilter} to provide global configuration
- * settings for CORS.
- *
- * @author Tim Dillon
- * @version 1.0
- */
 @Component
 public class CORSFilter extends OncePerRequestFilter {
 

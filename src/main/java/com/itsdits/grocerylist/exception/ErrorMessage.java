@@ -2,13 +2,6 @@ package com.itsdits.grocerylist.exception;
 
 import java.util.Date;
 
-/**
- * ErrorMessage.java - This class provides a model for custom ErrorMessage objects
- * to be used in {@link ControllerExceptionHandler}.
- * 
- * @author Tim Dillon
- * @version 1.0
- */
 public class ErrorMessage {
 
     private final int statusCode;
