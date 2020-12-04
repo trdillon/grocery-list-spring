@@ -1,7 +1,6 @@
 package com.itsdits.grocerylist.service;
 
 import com.itsdits.grocerylist.model.Item;
-import com.itsdits.grocerylist.model.User;
 import com.itsdits.grocerylist.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,8 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public List<Item> getUserGroceryList(User user) {
-        return itemRepository.findAllByUserId(user.getId());
+    public List<Item> getUserGroceryList(String user) {
+        return itemRepository.findAllByUserId(user);
     }
 
     public List<Item> getByProductName(String name) {
@@ -36,5 +35,13 @@ public class ItemService {
 
     public List<Item> getByFavorite() {
         return itemRepository.findByFavorite(true);
+    }
+
+    public Item save(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public void delete(Long id) {
+        itemRepository.deleteById(id);
     }
 }
