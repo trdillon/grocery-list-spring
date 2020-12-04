@@ -42,6 +42,24 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    @GetMapping("/item/need")
+    ResponseEntity<List<Item>> getPurchased(boolean purchased) {
+        List<Item> items = new ArrayList<>();
+        if (purchased) {
+            items.addAll(itemService.getByPurchased());
+        } else {
+            items.addAll(itemService.getByNeeded());
+        }
+        if (items.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/item/favs")
+    ResponseEntity<List<Item>> getFavorites() {
+        return new ResponseEntity<>(itemService.getByFavorite(), HttpStatus.OK);
+    }
+
     @PostMapping("/item")
     ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
         log.info("Request to create grocery item: {}", item);
