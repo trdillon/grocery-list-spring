@@ -11,21 +11,29 @@ import java.util.List;
 @Transactional
 public class GroceryService {
 
-    private final GroceryRepository repo;
+    private final GroceryRepository groceryRepository;
 
-    public GroceryService(GroceryRepository repo) {
-        this.repo = repo;
+    public GroceryService(GroceryRepository groceryRepository) {
+        this.groceryRepository = groceryRepository;
     }
 
     public List<Grocery> getAll() {
-        return repo.findAll();
+        return groceryRepository.findAll();
     }
 
     public Grocery getById(long id) {
-        return repo.findById(id).orElse(null);
+        return groceryRepository.findById(id).orElse(null);
     }
 
     public List<Grocery> getByName(String name) {
-        return repo.findByNameContaining(name);
+        return groceryRepository.findByNameContaining(name);
+    }
+
+    public List<Grocery> getByGroup(String group) {
+        return groceryRepository.findByGroupContaining(group);
+    }
+
+    public List<Grocery> getBySubGroup(String subgroup) {
+        return groceryRepository.findBySubGroupContaining(subgroup);
     }
 }

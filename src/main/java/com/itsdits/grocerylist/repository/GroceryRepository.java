@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface GroceryRepository extends JpaRepository<Grocery, Long> {
     List<Grocery> findByNameContaining(String name);
+    List<Grocery> findByGroupContaining(String group);
+    List<Grocery> findBySubGroupContaining(String subgroup);
 }
