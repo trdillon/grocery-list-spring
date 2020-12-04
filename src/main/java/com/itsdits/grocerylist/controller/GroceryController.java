@@ -5,11 +5,9 @@ import com.itsdits.grocerylist.model.Grocery;
 import com.itsdits.grocerylist.service.GroceryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +22,20 @@ public class GroceryController {
     }
 
     @GetMapping("/groceries")
-    List<Grocery> getGroceries() {
-        return groceryService.getAll();
+    ResponseEntity<List<Grocery>> getGroceries(@RequestParam(required = false) String name) {
+        List<Grocery> groceries = new ArrayList<>();
+
+        if (name == null) {
+            groceries.addAll(groceryService.getAll());
+        } else {
+            groceries.addAll(groceryService.getByName(name));
+        }
+
+        if (groceries.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
     @GetMapping("/grocery/{id}")
@@ -33,10 +43,5 @@ public class GroceryController {
         Optional<Grocery> grocery = Optional.ofNullable(groceryService.getById(id));
         return grocery.map(response -> ResponseEntity.ok().body(response))
                 .orElseThrow(() -> new ResourceNotFoundException("No grocery with the ID " + id + " was found."));
-    }
-
-    @GetMapping("/groceries")
-    ResponseEntity<List<Grocery>> getGroceryByName(String name) {
-        return new ResponseEntity<>(groceryService.getByName(name), HttpStatus.OK);
     }
 }
