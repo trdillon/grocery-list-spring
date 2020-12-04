@@ -16,7 +16,7 @@ import java.util.Set;
 public class Grocery {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @NonNull
     private String name;
