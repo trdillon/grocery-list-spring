@@ -3,6 +3,7 @@ package com.itsdits.grocerylist.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,6 +18,7 @@ public class User {
     @Id
     @GeneratedValue
     private String id;
+    @NonNull
     private String name;
     private String email;
 
