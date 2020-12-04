@@ -24,17 +24,14 @@ public class GroceryController {
     @GetMapping("/groceries")
     ResponseEntity<List<Grocery>> getGroceries(@RequestParam(required = false) String name) {
         List<Grocery> groceries = new ArrayList<>();
-
+        // retrieve all grocery objects unless a search string was provided
         if (name == null) {
             groceries.addAll(groceryService.getAll());
         } else {
             groceries.addAll(groceryService.getByName(name));
         }
-
-        if (groceries.isEmpty()) {
+        if (groceries.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
         return new ResponseEntity<>(groceries, HttpStatus.OK);
     }
 
