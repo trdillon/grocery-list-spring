@@ -26,26 +26,26 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/grocery")
+    @GetMapping("/item")
     List<Item> getUserGroceryList(Principal principal) {
         return itemService.getUserGroceryList(principal.getName());
     }
 
-    @PostMapping("/grocery")
+    @PostMapping("/item")
     ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
         log.info("Request to create grocery item: {}", item);
         Item result = itemService.save(item);
         return ResponseEntity.created(new URI("/api/grocery/" + result.getId())).body(result);
     }
 
-    @PutMapping("/grocery/{id}")
+    @PutMapping("/item/{id}")
     ResponseEntity<Item> updateItem(@Valid @RequestBody Item item) {
         log.info("Request to update grocery item: {}", item);
         Item result = itemService.save(item);
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/grocery/{id}")
+    @DeleteMapping("/item/{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Long id) {
         log.info("Request to delete grocery item: {}", id);
         itemService.delete(id);
