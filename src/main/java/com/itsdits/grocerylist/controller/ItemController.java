@@ -4,6 +4,7 @@ import com.itsdits.grocerylist.model.Item;
 import com.itsdits.grocerylist.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,8 +29,17 @@ public class ItemController {
     }
 
     @GetMapping("/item")
-    List<Item> getUserGroceryList(Principal principal) {
-        return itemService.getUserGroceryList(principal.getName());
+    ResponseEntity<List<Item>> getItems(Principal principal, @RequestParam(required = false) String searchName) {
+        List<Item> items = new ArrayList<>();
+        // retrieve all user items unless a search string was provided
+        if (searchName == null) {
+            items.addAll(itemService.getUserGroceryList(principal.getName()));
+        } else {
+            items.addAll(itemService.getByProductName(searchName));
+        }
+        if (items.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @PostMapping("/item")
