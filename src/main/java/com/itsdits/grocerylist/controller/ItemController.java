@@ -64,7 +64,7 @@ public class ItemController {
     ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
         log.info("Request to create grocery item: {}", item);
         Item result = itemService.save(item);
-        return ResponseEntity.created(new URI("/api/grocery/" + result.getId())).body(result);
+        return ResponseEntity.created(new URI("/api/item/" + result.getId())).body(result);
     }
 
     @PutMapping("/item/{id}")
