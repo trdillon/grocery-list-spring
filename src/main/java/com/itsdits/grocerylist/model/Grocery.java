@@ -6,7 +6,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +22,9 @@ public class Grocery {
     private String group;
     @Column(name = "sub_group")
     private String subGroup;
-
+/*
     @OneToMany(mappedBy = "grocery")
     private Set<Item> items;
+
+ */
 }
