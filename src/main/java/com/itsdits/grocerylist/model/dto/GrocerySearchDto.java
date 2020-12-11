@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GrocerySearchDto {
 
-    private Long id;
     private String name;
     private String group;
     private String subGroup;
