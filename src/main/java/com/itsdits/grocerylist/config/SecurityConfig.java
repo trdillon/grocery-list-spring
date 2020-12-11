@@ -17,7 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/api/groceries/**");
+                .antMatchers("/api/groceries/**")
+                .antMatchers("/error/**"); //FIXME - remove when done debugging
     }
 
     @Override

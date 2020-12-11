@@ -1,34 +1,37 @@
 package com.itsdits.grocerylist.exception;
 
-import java.util.Date;
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ErrorMessage {
 
-    private final int statusCode;
-    private final Date timestamp;
-    private final String message;
-    private final String description;
+    private HttpStatus status;
+    private String message;
+    private String debugMessage;
+    private List<SubError> subErrors;
 
-    public ErrorMessage(int statusCode, Date timestamp, String message, String description) {
-        this.statusCode = statusCode;
-        this.timestamp = timestamp;
+    private ErrorMessage() {
+        LocalDateTime timestamp = LocalDateTime.now();
+    }
+
+    ErrorMessage(HttpStatus status) {
+        this();
+        this.status = status;
+    }
+
+    ErrorMessage(HttpStatus status, Throwable ex) {
+        this();
+        this.status = status;
+        this.message = "Unexpected error";
+        this.debugMessage = ex.getLocalizedMessage();
+    }
+
+    ErrorMessage(HttpStatus status, String message, Throwable ex) {
+        this();
+        this.status = status;
         this.message = message;
-        this.description = description;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getDescription() {
-        return description;
+        this.debugMessage = ex.getLocalizedMessage();
     }
 }
