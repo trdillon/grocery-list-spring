@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Item {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -27,10 +27,7 @@ public class Item {
     @JoinColumn(name = "user_id")
     User user;
 
-    private String product;
     private int quantity;
     private int price;
     private String notes;
-    private boolean purchased;
-    private boolean favorite;
 }
