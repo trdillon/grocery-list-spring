@@ -47,8 +47,8 @@ public class GroceryController {
 
             // now build the query
             GrocerySearchDto grocerySearchDto = new GrocerySearchDto(name, group, subGroup);
-            List<Grocery> groceryList = groceryService.getAll(grocerySearchDto);
-            Page<Grocery> groceryPage = new PageImpl<>(groceryList, pageRequest, groceryList.size());
+            Page<Grocery> groceryPage = groceryService.getAll(grocerySearchDto, pageRequest);
+            List<Grocery> groceryList = groceryPage.getContent();
 
             if(groceryList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -1,7 +1,7 @@
 package com.itsdits.grocerylist.service;
 
-import com.itsdits.grocerylist.model.dto.GrocerySearchDto;
 import com.itsdits.grocerylist.model.Grocery;
+import com.itsdits.grocerylist.model.dto.GrocerySearchDto;
 import com.itsdits.grocerylist.repository.GroceryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -20,7 +18,7 @@ public class GroceryService {
 
     private final GroceryRepository groceryRepository;
 
-    public List<Grocery> getAll(GrocerySearchDto grocerySearchDto) {
+    public Page<Grocery> getAll(GrocerySearchDto grocerySearchDto, Pageable pageable) {
         Grocery groceryProbe = new Grocery();
         groceryProbe.setName(grocerySearchDto.getName());
         groceryProbe.setGroup(grocerySearchDto.getGroup());
@@ -32,7 +30,7 @@ public class GroceryService {
                 .withNullHandler(ExampleMatcher.NullHandler.IGNORE)
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        return groceryRepository.findAll(Example.of(groceryProbe, groceryMatcher));
+        return groceryRepository.findAll(Example.of(groceryProbe, groceryMatcher), pageable);
     }
 
     public Page<Grocery> getByName(String name, Pageable pageable) {
