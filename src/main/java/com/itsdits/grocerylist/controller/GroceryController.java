@@ -16,7 +16,7 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/groceries")
+@RequestMapping("/api/grocery")
 public class GroceryController {
 
     private final GroceryService groceryService;

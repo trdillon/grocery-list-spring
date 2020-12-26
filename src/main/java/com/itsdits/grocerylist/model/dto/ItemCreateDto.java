@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ItemCreateDto {
 
     private int groceryId;
-    private int UserId;
+    private int userId;
     private int quantity;
     private int price;
     private String notes;
