@@ -2,10 +2,11 @@ package com.itsdits.grocerylist.service;
 
 import com.itsdits.grocerylist.model.Item;
 import com.itsdits.grocerylist.repository.ItemRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
@@ -17,24 +18,8 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public List<Item> getUserGroceryList(String user) {
-        return itemRepository.findAllByUserId(user);
-    }
-
-    public List<Item> getByProductName(String name) {
-        return itemRepository.findByProductContaining(name);
-    }
-
-    public List<Item> getByNeeded() {
-        return itemRepository.findByPurchased(false);
-    }
-
-    public List<Item> getByPurchased() {
-        return itemRepository.findByPurchased(true);
-    }
-
-    public List<Item> getByFavorite() {
-        return itemRepository.findByFavorite(true);
+    public Page<Item> getItems(String user, Pageable pageable) {
+        return itemRepository.findAllByUserId(user, pageable);
     }
 
     public Item save(Item item) {
