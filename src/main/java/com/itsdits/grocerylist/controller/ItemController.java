@@ -1,6 +1,7 @@
 package com.itsdits.grocerylist.controller;
 
 import com.itsdits.grocerylist.model.Item;
+import com.itsdits.grocerylist.model.User;
 import com.itsdits.grocerylist.service.ItemService;
 import com.itsdits.grocerylist.service.UserService;
 import org.slf4j.Logger;
@@ -16,15 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/item")
@@ -65,8 +63,8 @@ public class ItemController {
 
             // now build the query
             Map<String, Object> details = principal.getAttributes();
-            String user = details.get("sub").toString();
-            Page<Item> itemPage = itemService.getItems(user, pageRequest);
+            String userId = details.get("sub").toString();
+            Page<Item> itemPage = itemService.getItems(userId, pageRequest);
             List<Item> itemList = itemPage.getContent();
 
             if(itemList.isEmpty()) {
@@ -85,5 +83,35 @@ public class ItemController {
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/add")
+    ResponseEntity<Item> createItem(@Valid @RequestBody Item item,
+                                    @AuthenticationPrincipal OAuth2User principal) throws URISyntaxException {
+        log.info("Request to create item: {}", item);
+        Map<String, Object> details = principal.getAttributes();
+        String userId = details.get("sub").toString();
+
+        // check to see if user already exists else create a new one
+        Optional<User> user = userService.getUser(userId);
+        item.setUser(user.orElse(new User(userId,
+                details.get("name").toString(), details.get("email").toString())));
+
+        Item result = itemService.save(item);
+        return ResponseEntity.created(new URI("/api/item/" + result.getId())).body(result);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Item> updateItem(@Valid @RequestBody Item item) {
+        log.info("Request to update item: {}", item);
+        Item result = itemService.save(item);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteItem(@PathVariable Long id) {
+        log.info("Request to delete item: {}", id);
+        itemService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
